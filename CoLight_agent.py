@@ -15,7 +15,7 @@ from tensorflow.keras.layers import (
     Concatenate, Embedding, RepeatVector, Activation, Layer
 )
 from tensorflow.keras.models import Model, model_from_json, load_model
-from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.utils import np_utils, to_categorical
 from tensorflow.keras.callbacks import EarlyStopping, TensorBoard
 
 
