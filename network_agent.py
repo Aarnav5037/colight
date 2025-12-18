@@ -13,7 +13,7 @@ from tensorflow.keras.layers import (
 from tensorflow.keras.models import Model, model_from_json, load_model
 from tensorflow.keras.optimizers import RMSprop
 from tensorflow.keras.callbacks import EarlyStopping, TensorBoard
-
+from keras.engine.topology import Layer
 from agent import Agent
 
 
