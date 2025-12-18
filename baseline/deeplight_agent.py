@@ -1,24 +1,24 @@
-
-
-from keras.callbacks import EarlyStopping, TensorBoard
-from keras.layers.merge import concatenate, add
+from tensorflow.keras.callbacks import EarlyStopping, TensorBoard
+from tensorflow.keras.layers import concatenate, add
 
 import pickle
-
-### network_agent
-
 import numpy as np
-from keras.layers import Input, Dense, Conv2D, Flatten, BatchNormalization, Activation, Multiply, Add
-from keras.models import Model, model_from_json, load_model
-from keras.optimizers import RMSprop
-from keras.layers.core import Dropout
-from keras.layers.pooling import MaxPooling2D
-from keras import backend as K
 import random
-from keras.engine.topology import Layer
 import os
 
+from tensorflow.keras.layers import (
+    Input, Dense, Conv2D, Flatten,
+    BatchNormalization, Activation,
+    Multiply, Add, Dropout, MaxPooling2D
+)
+
+from tensorflow.keras.models import Model, model_from_json, load_model
+from tensorflow.keras.optimizers import RMSprop
+from tensorflow.keras import backend as K
+from tensorflow.keras.layers import Layer
+
 from agent import Agent
+
 
 class Selector(Layer):
 
