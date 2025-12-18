@@ -8,12 +8,12 @@ import tensorflow as tf
 from tensorflow.keras import backend as K
 from tensorflow.keras.layers import (
     Input, Dense, Conv2D, Flatten, BatchNormalization,
-    Activation, Multiply, Add, Dropout, MaxPooling2D, Concatenate
+    Activation, Multiply, Add, Dropout, MaxPooling2D, Concatenate, Layer
 )
 from tensorflow.keras.models import Model, model_from_json, load_model
 from tensorflow.keras.optimizers import RMSprop
 from tensorflow.keras.callbacks import EarlyStopping, TensorBoard
-from keras.engine.topology import Layer
+
 from agent import Agent
 
 
