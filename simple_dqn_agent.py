@@ -1,17 +1,21 @@
-
 import numpy as np
-from keras import backend as K
-from keras.layers import Input, Dense, Conv2D, Flatten, BatchNormalization, Activation, Multiply, Add
-from keras.models import Model, model_from_json, load_model
-from keras.optimizers import RMSprop
-from keras.callbacks import EarlyStopping, TensorBoard
-from keras.layers.merge import concatenate, add
 import random
 import os
 import pickle
+import json
+
+from tensorflow.keras import backend as K
+from tensorflow.keras.layers import (
+    Input, Dense, Conv2D, Flatten,
+    BatchNormalization, Activation,
+    Multiply, Add, Dropout, MaxPooling2D,
+    concatenate, add
+)
+from tensorflow.keras.models import Model, model_from_json, load_model
+from tensorflow.keras.optimizers import RMSprop
+from tensorflow.keras.callbacks import EarlyStopping, TensorBoard
 
 from network_agent import NetworkAgent, conv2d_bn, Selector
-import json
 
 
 class SimpleDQNAgent(NetworkAgent): 
