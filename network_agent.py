@@ -1,17 +1,21 @@
-
-import numpy as np
-from keras.layers import Input, Dense, Conv2D, Flatten, BatchNormalization, Activation, Multiply, Add
-from keras.models import Model, model_from_json, load_model
-from keras.optimizers import RMSprop
-from keras.layers.core import Dropout
-from keras.layers.pooling import MaxPooling2D
-from keras import backend as K
-import random
-from keras.engine.topology import Layer
 import os
-from keras.callbacks import EarlyStopping, TensorBoard
+import random
+import pickle
+import json
+import numpy as np
+
+import tensorflow as tf
+from tensorflow.keras import backend as K
+from tensorflow.keras.layers import (
+    Input, Dense, Conv2D, Flatten, BatchNormalization,
+    Activation, Multiply, Add, Dropout, MaxPooling2D, Concatenate
+)
+from tensorflow.keras.models import Model, model_from_json, load_model
+from tensorflow.keras.optimizers import RMSprop
+from tensorflow.keras.callbacks import EarlyStopping, TensorBoard
 
 from agent import Agent
+
 
 class Selector(Layer):
 
