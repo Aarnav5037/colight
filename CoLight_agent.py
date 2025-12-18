@@ -1,24 +1,23 @@
-import numpy as np 
-import os 
-import pickle  
-from agent import Agent
-import random 
+import numpy as np
+import os
+import pickle
+import random
 import time
-"""
-Model for CoLight in paper "CoLight: Learning Network-level Cooperation for Traffic Signal
-Control", in submission. 
-"""
-import keras
-from keras import backend as K
-from keras.optimizers import Adam, RMSprop
 import tensorflow as tf
-from keras.layers import Dense, Dropout, Conv2D, Input, Lambda, Flatten, TimeDistributed, merge
-from keras.layers import Add, Reshape, MaxPooling2D, Concatenate, Embedding, RepeatVector
-from keras.models import Model, model_from_json, load_model
-from keras.layers.core import Activation
-from keras.utils import np_utils,to_categorical
-from keras.engine.topology import Layer
-from keras.callbacks import EarlyStopping, TensorBoard
+from agent import Agent
+
+# TensorFlow / Keras imports
+from tensorflow.keras import backend as K
+from tensorflow.keras.optimizers import Adam, RMSprop
+from tensorflow.keras.layers import (
+    Dense, Dropout, Conv2D, Input, Lambda, Flatten,
+    TimeDistributed, Add, Reshape, MaxPooling2D,
+    Concatenate, Embedding, RepeatVector, Activation, Layer
+)
+from tensorflow.keras.models import Model, model_from_json, load_model
+from tensorflow.keras.utils import np_utils, to_categorical
+from tensorflow.keras.callbacks import EarlyStopping, TensorBoard
+
 
 # SEED=6666
 # random.seed(SEED)
