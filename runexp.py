@@ -29,8 +29,8 @@ def parse_args():
     parser.add_argument("--memo", type=str, default='0515_afternoon_Colight_6_6_bi')#1_3,2_2,3_3,4_4
     parser.add_argument("--env", type=int, default=1) #env=1 means you will run CityFlow
     parser.add_argument("--gui", type=bool, default=False)
-    parser.add_argument("--road_net", type=str, default='6_6')#'1_2') # which road net you are going to run
-    parser.add_argument("--volume", type=str, default='300')#'300'
+    parser.add_argument("--road_net", type=str, default='1_2')#'1_2') # which road net you are going to run
+    parser.add_argument("--volume", type=str, default='100')#'300'
     parser.add_argument("--suffix", type=str, default="0.3_bi")#0.3
 
     global hangzhou_archive
@@ -40,7 +40,7 @@ def parse_args():
     global TOP_K_ADJACENCY_LANE
     TOP_K_ADJACENCY_LANE=5
     global NUM_ROUNDS
-    NUM_ROUNDS=100
+    NUM_ROUNDS=5
     global EARLY_STOP
     EARLY_STOP=False
     global NEIGHBOR
@@ -56,8 +56,8 @@ def parse_args():
     global PRETRAIN
     PRETRAIN=False
     parser.add_argument("--mod", type=str, default='CoLight')#SimpleDQN,SimpleDQNOne,GCN,CoLight,Lit
-    parser.add_argument("--cnt",type=int, default=3600)#3600
-    parser.add_argument("--gen",type=int, default=4)#4
+    parser.add_argument("--cnt",type=int, default=600)#3600
+    parser.add_argument("--gen",type=int, default=1)#4
 
     parser.add_argument("-all", action="store_true", default=False)
     parser.add_argument("--workers",type=int, default=7)
@@ -188,9 +188,9 @@ def main(memo, env, road_net, gui, volume, suffix, mod, cnt, gen, r_all, workers
         }
 
         dic_agent_conf_extra = {
-            "EPOCHS": 100,
-            "SAMPLE_SIZE": 1000,
-            "MAX_MEMORY_LEN": 10000,
+            "EPOCHS": 2,
+            "SAMPLE_SIZE": 64,
+            "MAX_MEMORY_LEN": 500,
             "UPDATE_Q_BAR_EVERY_C_ROUND": False,
             "UPDATE_Q_BAR_FREQ": 5,
             # network
