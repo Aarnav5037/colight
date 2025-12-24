@@ -40,7 +40,7 @@ def parse_args():
     global TOP_K_ADJACENCY_LANE
     TOP_K_ADJACENCY_LANE=5
     global NUM_ROUNDS
-    NUM_ROUNDS=5
+    NUM_ROUNDS=1
     global EARLY_STOP
     EARLY_STOP=False
     global NEIGHBOR
@@ -60,10 +60,10 @@ def parse_args():
     parser.add_argument("--gen",type=int, default=1)#4
 
     parser.add_argument("-all", action="store_true", default=False)
-    parser.add_argument("--workers",type=int, default=7)
+    parser.add_argument("--workers",type=int, default=2)
     parser.add_argument("--onemodel",type=bool, default=False)
 
-    parser.add_argument("--visible_gpu", type=str, default="-1")
+    parser.add_argument("--visible_gpu", type=str, default="0,1")
     global ANON_PHASE_REPRE
     tt=parser.parse_args()
     if 'CoLight_Signal' in tt.mod:
@@ -145,7 +145,7 @@ def main(memo, env, road_net, gui, volume, suffix, mod, cnt, gen, r_all, workers
     ENVIRONMENT = ["sumo", "anon"][env]
 
     if r_all:
-        traffic_file_list = [ENVIRONMENT+"_"+road_net+"_%d_%s" %(v,suffix) for v in range(100,400,100)]
+        traffic_file_list = [ENVIRONMENT+"_"+road_net+"_%d_%s" %(300,suffix)]
     else:
         traffic_file_list=["{0}_{1}_{2}_{3}".format(ENVIRONMENT, road_net, volume, suffix)]
 
@@ -189,7 +189,7 @@ def main(memo, env, road_net, gui, volume, suffix, mod, cnt, gen, r_all, workers
 
         dic_agent_conf_extra = {
             "EPOCHS": 2,
-            "SAMPLE_SIZE": 64,
+            "SAMPLE_SIZE": 32,
             "MAX_MEMORY_LEN": 500,
             "UPDATE_Q_BAR_EVERY_C_ROUND": False,
             "UPDATE_Q_BAR_FREQ": 5,
