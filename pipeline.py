@@ -387,14 +387,16 @@ class Pipeline:
             generator_start_time = time.time()
             if multi_process:
                 for cnt_gen in range(self.dic_exp_conf["NUM_GENERATORS"]):
-                    p = Process(target=self.generator_wrapper,
+                    self.generator_wrapper(cnt_round, cnt_gen, self.dic_path, self.dic_exp_conf,
+                                           self.dic_agent_conf, self.dic_traffic_env_conf, best_round)
+                    '''p = Process(target=self.generator_wrapper,
                                 args=(cnt_round, cnt_gen, self.dic_path, self.dic_exp_conf,
                                       self.dic_agent_conf, self.dic_traffic_env_conf, best_round)
                                 )
                     print("before p")
                     p.start()
                     print("end p")
-                    process_list.append(p)
+                    process_list.append(p)'''
                 print("before join")
                 for i in range(len(process_list)):
                     p = process_list[i]
