@@ -451,7 +451,7 @@ def main(memo, env, road_net, gui, volume, suffix, mod, cnt, gen, r_all, workers
         
             # Where the input data (road networks and traffic flows) is located
             # Note: Ensure your data folder is copied/cloned into /kaggle/working/
-            "PATH_TO_DATA": os.path.join(base_dir, "RLSignal/data", template, prefix_intersections),
+            "PATH_TO_DATA": os.path.join(base_dir, "colight/data", template, prefix_intersections),
         
             # --- Pretraining Paths ---
             # Where to save models if PRETRAIN is set to True
