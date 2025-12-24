@@ -88,7 +88,8 @@ class Generator:
         reset_env_time = time.time() - reset_env_start_time
 
         running_start_time = time.time()
-
+        print(f"DEBUG: RUN_COUNTS={self.dic_exp_conf['RUN_COUNTS']}, MIN_TIME={self.dic_traffic_env_conf['MIN_ACTION_TIME']}")
+        print(f"DEBUG: Loop will run {int(self.dic_exp_conf['RUN_COUNTS']/self.dic_traffic_env_conf['MIN_ACTION_TIME'])} times")
         while not done and step_num < int(self.dic_exp_conf["RUN_COUNTS"]/self.dic_traffic_env_conf["MIN_ACTION_TIME"]):
             action_list = []
             step_start_time = time.time()
