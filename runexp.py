@@ -435,15 +435,36 @@ def main(memo, env, road_net, gui, volume, suffix, mod, cnt, gen, r_all, workers
 
 
         print(traffic_file)
+        
+        # Define the base directory for Kaggle's writable space
+        base_dir = "/kaggle/working"
+        
+        # prefix_intersections is likely your road_net name (e.g., '3_3')
         prefix_intersections = str(road_net)
+        
         dic_path_extra = {
-            "PATH_TO_MODEL": os.path.join("model", memo, traffic_file + "_" + time.strftime('%m_%d_%H_%M_%S', time.localtime(time.time()))),
-            "PATH_TO_WORK_DIRECTORY": os.path.join("records", memo, traffic_file + "_" + time.strftime('%m_%d_%H_%M_%S', time.localtime(time.time()))),
-
-            "PATH_TO_DATA": os.path.join("data", template, prefix_intersections),
-            "PATH_TO_PRETRAIN_MODEL": os.path.join("model", "initial", traffic_file),
-            "PATH_TO_PRETRAIN_WORK_DIRECTORY": os.path.join("records", "initial", traffic_file),
-            "PATH_TO_ERROR": os.path.join("errors", memo)
+            # Where the current training models are saved
+            "PATH_TO_MODEL": os.path.join(base_dir, "model", memo, traffic_file),
+            
+            # Where the simulation logs (.json or .xml) and results are stored
+            "PATH_TO_WORK_DIRECTORY": os.path.join(base_dir, "records", memo, traffic_file),
+        
+            # Where the input data (road networks and traffic flows) is located
+            # Note: Ensure your data folder is copied/cloned into /kaggle/working/
+            "PATH_TO_DATA": os.path.join(base_dir, "RLSignal/data", template, prefix_intersections),
+        
+            # --- Pretraining Paths ---
+            # Where to save models if PRETRAIN is set to True
+            "PATH_TO_PRETRAIN_MODEL": os.path.join(base_dir, "model", "initial", traffic_file),
+            
+            # Where to save logs during the pretraining phase
+            "PATH_TO_PRETRAIN_WORK_DIRECTORY": os.path.join(base_dir, "records", "initial", traffic_file),
+            
+            # Path to load existing pretrained weights from (if PRETRAIN is False but you want to start from a base)
+            "PATH_TO_PRETRAIN_DATA": os.path.join(base_dir, "model", "initial", traffic_file),
+        
+            # Where to log system or simulation errors
+            "PATH_TO_ERROR": os.path.join(base_dir, "errors", memo)
         }
 
         deploy_dic_exp_conf = merge(config.DIC_EXP_CONF, dic_exp_conf_extra)
