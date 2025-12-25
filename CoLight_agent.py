@@ -204,7 +204,9 @@ class CoLightAgent(Agent):
         neighbor_repr=RepeatVector3D(self.num_agents)(In_agent)
         print("neighbor_repr.shape", neighbor_repr.shape)
         #[batch,agent,neighbor,agent]x[batch,agent,agent,dim]->[batch,agent,neighbor,dim]
-        neighbor_repr=Lambda(lambda x:K.batch_dot(x[0],x[1]))([In_neighbor,neighbor_repr])
+        #neighbor_repr=Lambda(lambda x:K.batch_dot(x[0],x[1]))([In_neighbor,neighbor_repr])
+        # Force the dot product to reduce the agent dimension (usually axis 2 or 3)
+        neighbor_repr = Lambda(lambda x: K.batch_dot(x[0], x[1], axes=[3, 2]))([In_neighbor, neighbor_repr])
         print("neighbor_repr.shape", neighbor_repr.shape)
         """
         attention computation
