@@ -5,7 +5,8 @@ import random
 import time
 import tensorflow as tf
 from agent import Agent
-
+import keras
+keras.config.enable_unsafe_deserialization()
 # TensorFlow / Keras imports
 from tensorflow.keras import backend as K
 from tensorflow.keras.optimizers import Adam, RMSprop
