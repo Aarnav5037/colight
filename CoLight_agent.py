@@ -208,7 +208,7 @@ class CoLightAgent(Agent):
         #neighbor_repr=Lambda(lambda x:K.batch_dot(x[0],x[1]))([In_neighbor,neighbor_repr])
         # Force the dot product to reduce the agent dimension (usually axis 2 or 3)
         neighbor_repr = Lambda(
-            lambda x: K.matmul(x[0], x[1]),
+            lambda x: tf.matmul(x[0], x[1]),
             output_shape=(self.num_agents, self.num_neighbors, 32) # batch is omitted here
         )([In_neighbor, neighbor_repr])
         print("neighbor_repr.shape", neighbor_repr.shape)
@@ -238,7 +238,7 @@ class CoLightAgent(Agent):
         )(neighbor_repr_head)
         #neighbor_repr_head=Lambda(lambda x:K.permute_dimensions(K.reshape(x,(-1,self.num_agents,self.num_neighbors,dv,nv)),(0,1,4,2,3)))(neighbor_repr_head)        
         #[batch,agent,nv,1,dv]x[batch,agent,nv,neighbor,dv]->[batch,agent,nv,1,neighbor]
-        att = Lambda(lambda x: K.softmax(K.matmul(x[0], K.permute_dimensions(x[1], (0, 1, 2, 4, 3)))),
+        att = Lambda(lambda x: K.softmax(tf.matmul(x[0], K.permute_dimensions(x[1], (0, 1, 2, 4, 3)))),
              output_shape=(self.num_agents, nv, 1, self.num_neighbors))([agent_repr_head, neighbor_repr_head])
         #[batch,agent,nv,1,neighbor]->[batch,agent,nv,neighbor]
         att_record=Reshape((self.num_agents,nv,self.num_neighbors))(att)
@@ -251,7 +251,7 @@ class CoLightAgent(Agent):
             lambda x: K.permute_dimensions(x, (0, 1, 4, 2, 3)),
             output_shape=(self.num_agents, nv, self.num_neighbors, dv)
         )(neighbor_hidden_repr_head)
-        out = Lambda(lambda x: K.matmul(x[0], x[1]),
+        out = Lambda(lambda x: tf.matmul(x[0], x[1]),
              output_shape=(self.num_agents, nv, 1, dv))([att, neighbor_hidden_repr_head])
         out=Reshape((self.num_agents,dv*nv))(out)
         out = Dense(dout, activation = "relu",kernel_initializer='random_normal',name='MLP_after_relation_%d'%suffix)(out)
