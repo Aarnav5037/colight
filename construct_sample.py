@@ -144,6 +144,8 @@ class ConstructSample:
     def construct_reward(self,rewards_components,time, i):
 
         rs = self.logging_data_list_per_gen[i][time + self.measure_time - 1]
+        # Inside construct_sample.py, before line 192
+        print(f"DEBUG: Expected time {time + self.measure_time - 1}, but found rs['time'] {rs['time']}")
         assert time + self.measure_time - 1 == rs["time"]
         rs = self.get_reward_from_features(rs['state'])
         r_instant = self.cal_reward(rs, rewards_components)
