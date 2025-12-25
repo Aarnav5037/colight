@@ -220,7 +220,10 @@ class CoLightAgent(Agent):
         agent_repr_head=Dense(dv*nv,activation='relu',kernel_initializer='random_normal',name='agent_repr_%d'%suffix)(agent_repr)
         #[batch,agent,1,dv,nv]->[batch,agent,nv,1,dv]
         agent_repr_head=Reshape((self.num_agents,1,dv,nv))(agent_repr_head)
-        agent_repr_head=Lambda(lambda x:K.permute_dimensions(x,(0,1,4,2,3)))(agent_repr_head)
+        agent_repr_head = Lambda(
+            lambda x: K.permute_dimensions(x, (0, 1, 4, 2, 3)),
+            output_shape=(self.num_agents, nv, 1, dv)
+        )(agent_repr_head)
         #agent_repr_head=Lambda(lambda x:K.permute_dimensions(K.reshape(x,(-1,self.num_agents,1,dv,nv)),(0,1,4,2,3)))(agent_repr_head)
         #[batch,agent,neighbor,dim]->[batch,agent,neighbor,dv*nv]
 
@@ -229,7 +232,10 @@ class CoLightAgent(Agent):
         print("DEBUG",neighbor_repr_head.shape)
         print("self.num_agents,self.num_neighbors,dv,nv", self.num_agents,self.num_neighbors,dv,nv)
         neighbor_repr_head=Reshape((self.num_agents,self.num_neighbors,dv,nv))(neighbor_repr_head)
-        neighbor_repr_head=Lambda(lambda x:K.permute_dimensions(x,(0,1,4,2,3)))(neighbor_repr_head)
+        neighbor_repr_head = Lambda(
+            lambda x: K.permute_dimensions(x, (0, 1, 4, 2, 3)),
+            output_shape=(self.num_agents, nv, self.num_neighbors, dv)
+        )(neighbor_repr_head)
         #neighbor_repr_head=Lambda(lambda x:K.permute_dimensions(K.reshape(x,(-1,self.num_agents,self.num_neighbors,dv,nv)),(0,1,4,2,3)))(neighbor_repr_head)        
         #[batch,agent,nv,1,dv]x[batch,agent,nv,neighbor,dv]->[batch,agent,nv,1,neighbor]
         att = Lambda(lambda x: K.softmax(K.matmul(x[0], K.permute_dimensions(x[1], (0, 1, 2, 4, 3)))),
