@@ -1103,27 +1103,29 @@ class AnonEnv:
             f.close()
 
     def bulk_log_multi_process(self, batch_size=100):
+        """
+        Rewritten to run on the main thread. 
+        This avoids pickling errors and shows all logs/errors in the main console.
+        """
         assert len(self.list_intersection) == len(self.list_inter_log)
-        if batch_size > len(self.list_intersection):
-            batch_size_run = len(self.list_intersection)
-        else:
-            batch_size_run = batch_size
-        process_list = []
-        for batch in range(0, len(self.list_intersection), batch_size_run):
-            start = batch
-            stop = min(batch + batch_size, len(self.list_intersection))
-            p = Process(target=self.batch_log, args=(start,stop))
-            print("before")
-            p.start()
-            print("end")
-            process_list.append(p)
-        print("before join")
-
-        for t in process_list:
-            t.join()
-
-        print("end join")
-
+        
+        print("DEBUG: Starting bulk logging on the main thread...")
+        
+        # Instead of batching into processes, we process everything in one go
+        # or you can still loop if you want to keep the print statements.
+        start = 0
+        stop = len(self.list_intersection)
+        
+        try:
+            # Direct call to the logging logic
+            self.batch_log(start, stop)
+        except Exception as e:
+            print(f"CRITICAL ERROR during batch_log: {e}")
+            # This will now show you EXACTLY why the data isn't saving
+            raise e 
+    
+        print("DEBUG: Bulk logging completed successfully.")
+        
     def bulk_log(self):
 
         for inter_ind in range(len(self.list_intersection)):
