@@ -231,7 +231,8 @@ class CoLightAgent(Agent):
         neighbor_repr_head=Lambda(lambda x:K.permute_dimensions(x,(0,1,4,2,3)))(neighbor_repr_head)
         #neighbor_repr_head=Lambda(lambda x:K.permute_dimensions(K.reshape(x,(-1,self.num_agents,self.num_neighbors,dv,nv)),(0,1,4,2,3)))(neighbor_repr_head)        
         #[batch,agent,nv,1,dv]x[batch,agent,nv,neighbor,dv]->[batch,agent,nv,1,neighbor]
-        att=Lambda(lambda x:K.softmax(K.batch_dot(x[0],x[1],axes=[4,4])))([agent_repr_head,neighbor_repr_head])
+        att = Lambda(lambda x: K.softmax(K.matmul(x[0], K.permute_dimensions(x[1], (0, 1, 2, 4, 3)))),
+             output_shape=(self.num_agents, nv, 1, self.num_neighbors))([agent_repr_head, neighbor_repr_head])
         #[batch,agent,nv,1,neighbor]->[batch,agent,nv,neighbor]
         att_record=Reshape((self.num_agents,nv,self.num_neighbors))(att)
 
