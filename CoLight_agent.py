@@ -483,12 +483,12 @@ class CoLightAgent(Agent):
 
         if self.att_regulatization:
             model.compile(
-                optimizer=RMSprop(lr=self.dic_agent_conf["LEARNING_RATE"]),
+                optimizer=RMSprop(learning_rate=self.dic_agent_conf["LEARNING_RATE"]),
                 loss=[self.dic_agent_conf["LOSS_FUNCTION"],'kullback_leibler_divergence'],
                 loss_weights=[1,self.dic_agent_conf["rularization_rate"]])
         else:
             model.compile(
-                optimizer=RMSprop(lr=self.dic_agent_conf["LEARNING_RATE"]),
+                optimizer=RMSprop(learning_rate=self.dic_agent_conf["LEARNING_RATE"]),
                 loss=self.dic_agent_conf["LOSS_FUNCTION"],
                 loss_weights=[1,0])
         # model.compile(optimizer=Adam(lr = 0.0001), loss='mse')
