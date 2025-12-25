@@ -206,7 +206,10 @@ class CoLightAgent(Agent):
         #[batch,agent,neighbor,agent]x[batch,agent,agent,dim]->[batch,agent,neighbor,dim]
         #neighbor_repr=Lambda(lambda x:K.batch_dot(x[0],x[1]))([In_neighbor,neighbor_repr])
         # Force the dot product to reduce the agent dimension (usually axis 2 or 3)
-        neighbor_repr = Lambda(lambda x: K.matmul(x[0], x[1]))([In_neighbor, neighbor_repr])
+        neighbor_repr = Lambda(
+            lambda x: K.matmul(x[0], x[1]),
+            output_shape=(self.num_agents, self.num_neighbors, 32) # batch is omitted here
+        )([In_neighbor, neighbor_repr])
         print("neighbor_repr.shape", neighbor_repr.shape)
         """
         attention computation
