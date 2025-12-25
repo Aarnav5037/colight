@@ -241,8 +241,9 @@ class CoLightAgent(Agent):
         neighbor_hidden_repr_head=Dense(dv*nv,activation='relu',kernel_initializer='random_normal',name='neighbor_hidden_repr_%d'%suffix)(neighbor_repr)
         neighbor_hidden_repr_head=Reshape((self.num_agents,self.num_neighbors,dv,nv))(neighbor_hidden_repr_head)
         neighbor_hidden_repr_head=Lambda(lambda x:K.permute_dimensions(x,(0,1,4,2,3)))(neighbor_hidden_repr_head)
-        out=Lambda(lambda x:K.mean(K.batch_dot(x[0],x[1]),axis=2))([att,neighbor_hidden_repr_head])
-        out=Reshape((self.num_agents,dv))(out)
+        out = Lambda(lambda x: K.matmul(x[0], x[1]),
+             output_shape=(self.num_agents, nv, 1, dv))([att, neighbor_hidden_repr_head])
+        out=Reshape((self.num_agents,dv*nv))(out)
         out = Dense(dout, activation = "relu",kernel_initializer='random_normal',name='MLP_after_relation_%d'%suffix)(out)
         return out,att_record
 
