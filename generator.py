@@ -102,7 +102,7 @@ class Generator:
                         action, _ = self.agents[i].choose_action(step_num, one_state)
                         print("DEBUG step", step_num, "type(state):", type(state), "len(state) if possible:",
                               len(state) if hasattr(state, "__len__") else None)
-                        print("DEBUG action_list type/len:", type(action_list), getattr(action_list, "__len__", lambda: None)())
+                        
                     elif self.dic_exp_conf["MODEL_NAME"] == 'GCN':
                         action = self.agents[i].choose_action(step_num, one_state)
                     else: # simpleDQNOne
@@ -111,6 +111,7 @@ class Generator:
                         else:
                             action = self.agents[i].choose_action_separate(step_num, one_state)
                     action_list = action
+                    print("DEBUG action_list type/len:", type(action_list), getattr(action_list, "__len__", lambda: None)())
                 else:
                     one_state = state[i]
                     action = self.agents[i].choose_action(step_num, one_state)
