@@ -131,7 +131,7 @@ class Generator:
             state = next_state
             step_num += 1
         running_time = time.time() - running_start_time
-        print("After generation, log counts per intersection:", [len(x) for x in self.list_inter_log])
+        print("After generation, log counts per intersection:", [len(x) for x in self.env.list_inter_log])
 
         log_start_time = time.time()
         print("start logging")
