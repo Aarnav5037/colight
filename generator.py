@@ -118,12 +118,12 @@ class Generator:
                     action_list.append(action)
 
             next_state, reward, done, _ = self.env.step(action_list)
-            logical_time = step_num * self.dic_traffic_env_conf["MIN_ACTION_TIME"]
+            '''logical_time = step_num * self.dic_traffic_env_conf["MIN_ACTION_TIME"]
             self.env.log(
                     cur_time=logical_time,
                     before_action_feature=one_state,
                     action=action_list
-                )
+                )'''
             if step_num % 10 == 0:
                 print("DEBUG list_inter_log lengths:", [len(x) for x in self.env.list_inter_log])
             print("time: {0}, running_time: {1}".format(self.env.get_current_time()-self.dic_traffic_env_conf["MIN_ACTION_TIME"],
