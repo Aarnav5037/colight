@@ -100,6 +100,9 @@ class Generator:
                     one_state = state
                     if self.dic_exp_conf["MODEL_NAME"] == 'CoLight':
                         action, _ = self.agents[i].choose_action(step_num, one_state)
+                        print("DEBUG step", step_num, "type(state):", type(state), "len(state) if possible:",
+                              len(state) if hasattr(state, "__len__") else None)
+                        print("DEBUG action_list type/len:", type(action_list), getattr(action_list, "__len__", lambda: None)())
                     elif self.dic_exp_conf["MODEL_NAME"] == 'GCN':
                         action = self.agents[i].choose_action(step_num, one_state)
                     else: # simpleDQNOne
@@ -120,11 +123,14 @@ class Generator:
                     before_action_feature=one_state,
                     action=action_list
                 )
+            if step_num % 10 == 0:
+                print("DEBUG list_inter_log lengths:", [len(x) for x in self.env.list_inter_log])
             print("time: {0}, running_time: {1}".format(self.env.get_current_time()-self.dic_traffic_env_conf["MIN_ACTION_TIME"],
                                                         time.time()-step_start_time))
             state = next_state
             step_num += 1
         running_time = time.time() - running_start_time
+        print("After generation, log counts per intersection:", [len(x) for x in self.list_inter_log])
 
         log_start_time = time.time()
         print("start logging")
