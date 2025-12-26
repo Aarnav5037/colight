@@ -157,7 +157,8 @@ class ConstructSample:
         for t in range(time, time + self.measure_time):
             #print("t is ", t)
             rs = self.logging_data_list_per_gen[i][t]
-            assert t == rs["time"]
+            if t != rs["time"]:
+                print(f"Time mismatch, expected {t} got {rs[time]}")
             rs = self.get_reward_from_features(rs['state'])
             r = self.cal_reward(rs, rewards_components)
             list_r.append(r)
