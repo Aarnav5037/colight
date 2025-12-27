@@ -1115,6 +1115,12 @@ class AnonEnv:
             f = open(path_to_log_file, "wb")
             pickle.dump(self.list_inter_log[inter_ind], f)
             f.close()
+            with open(path_to_log_file, "rb") as f:
+                data = pickle.load(f)
+            
+            print(f"DEBUG: reloaded inter_{inter_ind}.pkl, entries =", len(data))
+            if len(data) > 0:
+                print("first entry:", data[0])
 
     def bulk_log_multi_process(self, batch_size=100):
         """
