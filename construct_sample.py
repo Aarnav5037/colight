@@ -240,12 +240,12 @@ class ConstructSample:
 
             # list_samples = self.evaluate_sample(list_samples)
             self.samples_all_intersection[i].extend(list_samples)
-            print(
+            '''print(
                 f"[make_reward] folder={folder}, inter={i}, "
                 f"input_log_len={len(self.list_inter_log[i])}, "
                 f"output_sample_len={len(self.samples_all_intersection[i])}, "
                 f"pass_code={pass_code}"
-            )
+            )'''
             return 1
         except Exception as e:
             print("Error occurs when making rewards in generator {0} for intersection {1}".format(folder, i))
