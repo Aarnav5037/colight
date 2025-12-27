@@ -211,6 +211,13 @@ class ConstructSample:
 
         try:
             total_time = int(self.logging_data_list_per_gen[i][-1]['time'] + 1)
+            print(
+                f"[make_reward] folder={folder}, inter={i}, "
+                f"input_log_len={len(self.list_inter_log[i])}, "
+                f"output_sample_len={len(self.samples_all_intersection[i])}, "
+                f"pass_code={pass_code}"
+            )
+
             # construct samples
             time_count = 0
             for time in range(0, total_time - self.measure_time + 1, self.interval):
