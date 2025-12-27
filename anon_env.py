@@ -1089,9 +1089,17 @@ class AnonEnv:
                                                     "action": action[inter_ind]})
 
     def batch_log(self, start, stop):
-        print("DEBUG (batch_log) list_inter_log id:", id(self.list_inter_log))
-        print("DEBUG (batch_log) log lengths:", [len(x) for x in self.list_inter_log])
-
+        print("\n===== DEBUG: AFTER GENERATION =====")
+        print("list_inter_log object id:", id(self.env.list_inter_log))
+        print("number of intersections:", len(self.env.list_inter_log))
+        
+        for i, log in enumerate(self.env.list_inter_log):
+            print(f"Inter {i}: entries = {len(log)}")
+            if len(log) > 0:
+                sample = log[0]
+                print("  sample entry keys:", sample.keys())
+                print("  sample entry:", sample)
+        print("=================================\n")
         for inter_ind in range(start, stop):
             if int(inter_ind)%100 == 0:
                 print("Batch log for inter ",inter_ind)
