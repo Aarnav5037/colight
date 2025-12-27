@@ -1089,6 +1089,9 @@ class AnonEnv:
                                                     "action": action[inter_ind]})
 
     def batch_log(self, start, stop):
+        print("DEBUG (batch_log) list_inter_log id:", id(self.list_inter_log))
+        print("DEBUG (batch_log) log lengths:", [len(x) for x in self.list_inter_log])
+
         for inter_ind in range(start, stop):
             if int(inter_ind)%100 == 0:
                 print("Batch log for inter ",inter_ind)
