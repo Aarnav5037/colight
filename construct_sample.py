@@ -29,6 +29,9 @@ class ConstructSample:
             print("Error occurs when making samples for inter {0}".format(i))
             print('traceback.format_exc():\n%s' % traceback.format_exc())
             return 0, None
+        print("DEBUG: loading file:", f_logging_data.name)
+        print("DEBUG: loaded object type:", type(logging_data))
+        print("DEBUG: loaded length:", len(logging_data))
 
     def load_data_for_system(self, folder):
         '''
@@ -44,6 +47,12 @@ class ConstructSample:
 
         for i in range(self.dic_traffic_env_conf['NUM_INTERSECTIONS']):
             pass_code, logging_data = self.load_data(folder, i)
+            print(
+                f"DEBUG: after load inter_{i}, "
+                f"type={type(logging_data)}, "
+                f"len={len(logging_data) if logging_data is not None else None}"
+            )
+
             if pass_code == 0:
                 return 0
             self.logging_data_list_per_gen.append(logging_data)
