@@ -1121,7 +1121,7 @@ class AnonEnv:
             print(f"DEBUG: reloaded inter_{inter_ind}.pkl, entries =", len(data))
             if len(data) > 0:
                 print("first entry:", data[0])
-
+            print(f"Path: {path_to_log_file}")
     def bulk_log_multi_process(self, batch_size=100):
         """
         Rewritten to run on the main thread. 
