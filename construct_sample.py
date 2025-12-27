@@ -26,7 +26,7 @@ class ConstructSample:
             print("DEBUG: loading file:", f_logging_data.name)
             print("DEBUG: loaded object type:", type(logging_data))
             print("DEBUG: loaded length:", len(logging_data))
-            path = os.path.join(self.path_to_samples, folder, "inter_{0}.pkl".format(i)
+            path = os.path.join(self.path_to_samples, folder, "inter_{0}.pkl".format(i))
             print("File exists:", os.path.exists(path))
             print("File size (bytes):", os.path.getsize(path))
 
