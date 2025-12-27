@@ -95,12 +95,12 @@ class ConstructSample:
         :param time:
         :param i:  intersection id
         :return:
-        '''
+        
         list_index = time // self.dic_traffic_env_conf["MIN_ACTION_TIME"]
     
         # Use list_index instead of time
-        state = self.logging_data_list_per_gen[i][list_index]
-        #state = self.logging_data_list_per_gen[i][time]
+        state = self.logging_data_list_per_gen[i][list_index]'''
+        state = self.logging_data_list_per_gen[i][time]
         if time != state["time"]:
             print(f"Warning: State time mismatch. Expected {time}, got {state['time']}")
         if self.dic_traffic_env_conf["BINARY_PHASE_EXPANSION"]:
@@ -160,12 +160,12 @@ class ConstructSample:
 
 
     def construct_reward(self,rewards_components,time, i):
-        interval = self.dic_traffic_env_conf["MIN_ACTION_TIME"]
+        '''interval = self.dic_traffic_env_conf["MIN_ACTION_TIME"]
     
         # Use index instead of time
         # For the instant reward (result of the action), we look at the next logged step
-        rs = self.logging_data_list_per_gen[i][time // interval]
-        #rs = self.logging_data_list_per_gen[i][time + self.measure_time - 1]
+        rs = self.logging_data_list_per_gen[i][time // interval]'''
+        rs = self.logging_data_list_per_gen[i][time + self.measure_time - 1]
         # Inside construct_sample.py, before line 192
         print(f"DEBUG: Expected time {time + self.measure_time - 1}, but found rs['time'] {rs['time']}")
         if abs((time + self.measure_time - 1) - rs["time"]) > 1:
@@ -226,20 +226,20 @@ class ConstructSample:
                                                                        time, i)
                 action = self.judge_action(time, i)
 
-                '''if time + self.interval == total_time:
+                if time + self.interval == total_time:
                     next_state = self.construct_state(self.dic_traffic_env_conf["LIST_STATE_FEATURE"],
                                                       time + self.interval - 1, i)
 
                 else:
                     next_state = self.construct_state(self.dic_traffic_env_conf["LIST_STATE_FEATURE"],
-                                                      time + self.interval, i)'''
+                                                      time + self.interval, i)
                 # Inside the time loop of make_reward
-                if time + self.interval >= total_time:
+                '''if time + self.interval >= total_time:
                     # If at the end, next_state is the same as current or the very last log
                     next_state = self.construct_state(self.dic_traffic_env_conf["LIST_STATE_FEATURE"], time, i)
                 else:
                     # This will now correctly look for Time 10, which Fix 1 converts to Index 1
-                    next_state = self.construct_state(self.dic_traffic_env_conf["LIST_STATE_FEATURE"], time + self.interval, i)
+                    next_state = self.construct_state(self.dic_traffic_env_conf["LIST_STATE_FEATURE"], time + self.interval, i)'''
                 sample = [state, action, next_state, reward_average, reward_instant, time,
                           folder+"-"+"round_{0}".format(self.cnt_round)]
                 list_samples.append(sample)
