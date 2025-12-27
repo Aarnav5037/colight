@@ -23,15 +23,16 @@ class ConstructSample:
             f_logging_data = open(os.path.join(self.path_to_samples, folder, "inter_{0}.pkl".format(i)), "rb")
             logging_data = pickle.load(f_logging_data)
             f_logging_data.close()
+            print("DEBUG: loading file:", f_logging_data.name)
+            print("DEBUG: loaded object type:", type(logging_data))
+            print("DEBUG: loaded length:", len(logging_data))
             return 1, logging_data
 
         except Exception as e:
             print("Error occurs when making samples for inter {0}".format(i))
             print('traceback.format_exc():\n%s' % traceback.format_exc())
             return 0, None
-        print("DEBUG: loading file:", f_logging_data.name)
-        print("DEBUG: loaded object type:", type(logging_data))
-        print("DEBUG: loaded length:", len(logging_data))
+
 
     def load_data_for_system(self, folder):
         '''
