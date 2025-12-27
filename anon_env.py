@@ -1096,7 +1096,7 @@ class AnonEnv:
         for i, log in enumerate(self.list_inter_log):
             print(f"Inter {i}: entries = {len(log)}")
             if len(log) > 0:
-                sample = log[0]
+                sample = log[1]
                 print("  sample entry keys:", sample.keys())
                 print("  sample entry:", sample)
         print("=================================\n")
@@ -1107,6 +1107,9 @@ class AnonEnv:
             dic_vehicle = self.list_intersection[inter_ind].get_dic_vehicle_arrive_leave_time()
             df = pd.DataFrame.from_dict(dic_vehicle,orient='index')
             df.to_csv(path_to_log_file, na_rep="nan")
+            print("\n===== DEBUG: INSIDE LOOP =====")
+            print("list_inter_log object id:", id(self.list_inter_log))
+            print("number of intersections:", len(self.list_inter_log))
 
             path_to_log_file = os.path.join(self.path_to_log, "inter_{0}.pkl".format(inter_ind))
             f = open(path_to_log_file, "wb")
