@@ -681,8 +681,8 @@ class CoLightAgent(Agent):
             print(self.dic_agent_conf["LOSS_FUNCTION"])
             network.compile(
                 optimizer=RMSprop(learning_rate=self.dic_agent_conf["LEARNING_RATE"]),
-                loss=self.dic_agent_conf["LOSS_FUNCTION"],
-                loss_weights=[1,0])
+                loss=self.dic_agent_conf["LOSS_FUNCTION"])
+                #loss_weights=[1,0])
 
         return network
 
