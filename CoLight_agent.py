@@ -619,6 +619,7 @@ class CoLightAgent(Agent):
                 loss=[self.dic_agent_conf["LOSS_FUNCTION"],'kullback_leibler_divergence'],
                 loss_weights=[1,self.dic_agent_conf["rularization_rate"]])
         else:
+            print(self.dic_agent_conf["LOSS_FUNCTION"])
             model.compile(
                 optimizer=RMSprop(learning_rate=self.dic_agent_conf["LEARNING_RATE"]),
                 loss=self.dic_agent_conf["LOSS_FUNCTION"],
