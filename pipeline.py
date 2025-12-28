@@ -436,18 +436,19 @@ class Pipeline:
             update_network_start_time = time.time()
             if self.dic_exp_conf["MODEL_NAME"] in self.dic_exp_conf["LIST_MODEL_NEED_TO_UPDATE"]:
                 if multi_process:
-                    p = Process(target=self.updater_wrapper,
-                                args=(cnt_round,
-                                      self.dic_agent_conf,
-                                      self.dic_exp_conf,
-                                      self.dic_traffic_env_conf,
-                                      self.dic_path,
-                                      best_round,
-                                      bar_round))
-                    p.start()
-                    print("update to join")
-                    p.join()
-                    print("update finish join")
+                    print("update start (single process)")
+                
+                    self.updater_wrapper(
+                        cnt_round,
+                        self.dic_agent_conf,
+                        self.dic_exp_conf,
+                        self.dic_traffic_env_conf,
+                        self.dic_path,
+                        best_round,
+                        bar_round
+                    )
+                
+                    print("update finish (single process)")
                 else:
                     self.updater_wrapper(cnt_round=cnt_round,
                                          dic_agent_conf=self.dic_agent_conf,
