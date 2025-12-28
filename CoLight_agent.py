@@ -645,6 +645,8 @@ class CoLightAgent(Agent):
 
         early_stopping = EarlyStopping(
             monitor='val_loss', patience=self.dic_agent_conf["PATIENCE"], verbose=0, mode='min')
+        print("Model outputs:", self.q_network.output)
+        print("Number of outputs:", len(self.q_network.outputs))
 
         # hist = self.q_network.fit(self.Xs, self.Y, batch_size=batch_size, epochs=epochs,
         #                           shuffle=False,
