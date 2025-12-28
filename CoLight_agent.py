@@ -25,6 +25,39 @@ from tensorflow.keras.callbacks import EarlyStopping, TensorBoard
 # np.random.seed(SEED)
 # tf.set_random_seed(SEED)
 
+class MatMulLayer(Layer):
+    def __init__(self, transpose_b=False, **kwargs):
+        super().__init__(**kwargs)
+        self.transpose_b = transpose_b
+
+    def call(self, inputs):
+        a, b = inputs
+        return tf.matmul(a, b, transpose_b=self.transpose_b)
+
+    def get_config(self):
+        config = super().get_config()
+        config.update({"transpose_b": self.transpose_b})
+        return config
+
+
+class PermuteLayer(Layer):
+    def __init__(self, dims, **kwargs):
+        super().__init__(**kwargs)
+        self.dims = tuple(dims)
+
+    def call(self, x):
+        return K.permute_dimensions(x, self.dims)
+
+    def get_config(self):
+        config = super().get_config()
+        config.update({"dims": self.dims})
+        return config
+
+
+class SoftmaxLayer(Layer):
+    def call(self, x):
+        return K.softmax(x)
+
 
 class RepeatVector3D(Layer):
     def __init__(self,times,**kwargs):
@@ -184,7 +217,7 @@ class CoLightAgent(Agent):
 
 
 
-    def MultiHeadsAttModel(self,In_agent,In_neighbor,l=5, d=128, dv=16, dout=128, nv = 8,suffix=-1):
+    '''def MultiHeadsAttModel(self,In_agent,In_neighbor,l=5, d=128, dv=16, dout=128, nv = 8,suffix=-1):
         """
         input:[bacth,agent,128]
         output:
@@ -194,7 +227,7 @@ class CoLightAgent(Agent):
         """
         agent repr
         """
-        import tensorflow as tf
+        
         print("In_agent.shape,In_neighbor.shape,l, d, dv, dout, nv", In_agent.shape,In_neighbor.shape,l, d, dv, dout, nv)
         #[batch,agent,dim]->[batch,agent,1,dim]
         agent_repr=Reshape((self.num_agents,1,d))(In_agent)
@@ -256,11 +289,98 @@ class CoLightAgent(Agent):
              output_shape=(self.num_agents, nv, 1, dv))([att, neighbor_hidden_repr_head])
         out=Reshape((self.num_agents,dv*nv))(out)
         out = Dense(dout, activation = "relu",kernel_initializer='random_normal',name='MLP_after_relation_%d'%suffix)(out)
-        return out,att_record
-
-
-
-
+        return out,att_record'''
+        
+    def MultiHeadsAttModel(self, In_agent, In_neighbor,
+                           l=5, d=128, dv=16, dout=128, nv=8, suffix=-1):
+    
+        # [batch, agent, d] -> [batch, agent, 1, d]
+        agent_repr = Reshape((self.num_agents, 1, d))(In_agent)
+    
+        # [batch, agent, d] -> [batch, agent, agent, d]
+        neighbor_repr = RepeatVector3D(self.num_agents)(In_agent)
+    
+        # adjacency matmul
+        neighbor_repr = MatMulLayer(name=f"neighbor_matmul_{suffix}")(
+            [In_neighbor, neighbor_repr]
+        )
+    
+        # agent head projection
+        agent_repr_head = Dense(
+            dv * nv,
+            activation="relu",
+            kernel_initializer="random_normal",
+            name=f"agent_repr_{suffix}"
+        )(agent_repr)
+    
+        agent_repr_head = Reshape((self.num_agents, 1, dv, nv))(agent_repr_head)
+    
+        agent_repr_head = PermuteLayer(
+            (0, 1, 4, 2, 3),
+            name=f"agent_perm_{suffix}"
+        )(agent_repr_head)
+    
+        # neighbor head projection
+        neighbor_repr_head = Dense(
+            dv * nv,
+            activation="relu",
+            kernel_initializer="random_normal",
+            name=f"neighbor_repr_{suffix}"
+        )(neighbor_repr)
+    
+        neighbor_repr_head = Reshape(
+            (self.num_agents, self.num_neighbors, dv, nv)
+        )(neighbor_repr_head)
+    
+        neighbor_repr_head = PermuteLayer(
+            (0, 1, 4, 2, 3),
+            name=f"neighbor_perm_{suffix}"
+        )(neighbor_repr_head)
+    
+        # attention scores
+        att_logits = MatMulLayer(
+            transpose_b=True,
+            name=f"att_matmul_{suffix}"
+        )([agent_repr_head, neighbor_repr_head])
+    
+        att = SoftmaxLayer(name=f"att_softmax_{suffix}")(att_logits)
+    
+        att_record = Reshape(
+            (self.num_agents, nv, self.num_neighbors)
+        )(att)
+    
+        # neighbor hidden embedding
+        neighbor_hidden_repr_head = Dense(
+            dv * nv,
+            activation="relu",
+            kernel_initializer="random_normal",
+            name=f"neighbor_hidden_repr_{suffix}"
+        )(neighbor_repr)
+    
+        neighbor_hidden_repr_head = Reshape(
+            (self.num_agents, self.num_neighbors, dv, nv)
+        )(neighbor_hidden_repr_head)
+    
+        neighbor_hidden_repr_head = PermuteLayer(
+            (0, 1, 4, 2, 3),
+            name=f"neighbor_hidden_perm_{suffix}"
+        )(neighbor_hidden_repr_head)
+    
+        # attention-weighted aggregation
+        out = MatMulLayer(name=f"out_matmul_{suffix}")(
+            [att, neighbor_hidden_repr_head]
+        )
+    
+        out = Reshape((self.num_agents, dv * nv))(out)
+    
+        out = Dense(
+            dout,
+            activation="relu",
+            kernel_initializer="random_normal",
+            name=f"MLP_after_relation_{suffix}"
+        )(out)
+    
+        return out, att_record
 
     def adjacency_index2matrix(self,adjacency_index):
         #adjacency_index(the nearest K neighbors):[1,2,3]
@@ -539,7 +659,12 @@ class CoLightAgent(Agent):
         '''Initialize a Q network from a copy'''
         network_structure = network_copy.to_json()
         network_weights = network_copy.get_weights()
-        network = model_from_json(network_structure, custom_objects={"RepeatVector3D": RepeatVector3D})
+        network = model_from_json(network_structure, custom_objects = {
+                                        "RepeatVector3D": RepeatVector3D,
+                                        "MatMulLayer": MatMulLayer,
+                                        "PermuteLayer": PermuteLayer,
+                                        "SoftmaxLayer": SoftmaxLayer,
+                                    })
         network.set_weights(network_weights)
 
         if self.att_regulatization:
