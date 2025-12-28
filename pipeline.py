@@ -462,6 +462,7 @@ class Pipeline:
                     path_to_log = os.path.join(self.dic_path["PATH_TO_WORK_DIRECTORY"], "train_round",
                                                "round_" + str(cnt_round), "generator_" + str(cnt_gen))
                     try:
+                        print(path_to_log)
                         self.downsample_for_system(path_to_log,self.dic_traffic_env_conf)
                     except Exception as e:
                         print("----------------------------")
