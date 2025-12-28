@@ -614,6 +614,7 @@ class CoLightAgent(Agent):
         model=Model(inputs=In,outputs=[out,att_record_all_layers])
 
         if self.att_regulatization:
+            print(self.dic_agent_conf["LOSS_FUNCTION"])
             model.compile(
                 optimizer=RMSprop(learning_rate=self.dic_agent_conf["LEARNING_RATE"]),
                 loss=[self.dic_agent_conf["LOSS_FUNCTION"],'kullback_leibler_divergence'],
