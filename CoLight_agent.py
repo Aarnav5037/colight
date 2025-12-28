@@ -275,11 +275,12 @@ class CoLightAgent(Agent):
         l = to_categorical(adjacency_index_new,num_classes=self.num_agents)
         return l
 
-    def action_att_predict(self,state,total_features=[],total_adjs=[],bar=False):
+    def action_att_predict(self,state,total_features=None,total_adjs=None,bar=False):
         #state:[batch,agent,features and adj]
         #return:act:[batch,agent],att:[batch,layers,agent,head,neighbors]
         batch_size=len(state)
-        if total_features==[] and total_adjs==[]:
+        #if total_features==[] and total_adjs==[]:
+        if total_features is None and total_adjs is None:
             total_features,total_adjs=list(),list()
             for i in range(batch_size): 
                 feature=[]
