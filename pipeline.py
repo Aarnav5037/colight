@@ -547,7 +547,7 @@ class Pipeline:
             print('==============  model pool evaluation =============')
                 
             if self.dic_exp_conf["MODEL_POOL"] and cnt_round > 50:
-                    self.model_pool_wrapper(
+                self.model_pool_wrapper(
                         dic_path=self.dic_path,
                         dic_exp_conf=self.dic_exp_conf,
                         cnt_round=cnt_round
