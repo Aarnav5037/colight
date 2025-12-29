@@ -488,7 +488,7 @@ class Pipeline:
             update_network_end_time = time.time()
             update_network_total_time = update_network_end_time - update_network_start_time
 
-            print("==============  test evaluation =============")
+            '''print("==============  test evaluation =============")
             test_evaluation_start_time = time.time()
             if multi_process:
                 p = Process(target=model_test.test,
@@ -500,7 +500,24 @@ class Pipeline:
                 model_test.test(self.dic_path["PATH_TO_MODEL"], cnt_round, self.dic_exp_conf["RUN_COUNTS"], self.dic_traffic_env_conf, if_gui=False)
 
             test_evaluation_end_time = time.time()
-            test_evaluation_total_time = test_evaluation_end_time - test_evaluation_start_time
+            test_evaluation_total_time = test_evaluation_end_time - test_evaluation_start_time'''
+            
+            print("==============  test evaluation =============")
+            
+            test_evaluation_start_time = time.time()
+            
+            model_test.test(
+                self.dic_path["PATH_TO_MODEL"],
+                cnt_round,
+                self.dic_exp_conf["RUN_COUNTS"],
+                self.dic_traffic_env_conf,
+                if_gui=False
+            )
+            
+            test_evaluation_end_time = time.time()
+            test_evaluation_total_time = (
+                test_evaluation_end_time - test_evaluation_start_time
+            )
 
             print('==============  early stopping =============')
             if self.dic_exp_conf["EARLY_STOP"]:
@@ -510,7 +527,7 @@ class Pipeline:
                     print("training ends at round %s" % cnt_round)
                     break
 
-            print('==============  model pool evaluation =============')
+            '''print('==============  model pool evaluation =============')
             if self.dic_exp_conf["MODEL_POOL"] and cnt_round > 50:
                 if multi_process:
                     p = Process(target=self.model_pool_wrapper,
@@ -526,7 +543,21 @@ class Pipeline:
                     self.model_pool_wrapper(dic_path=self.dic_path,
                                             dic_exp_conf=self.dic_exp_conf,
                                             cnt_round=cnt_round)
-                model_pool_dir = os.path.join(self.dic_path["PATH_TO_WORK_DIRECTORY"], "best_model.pkl")
+                model_pool_dir = os.path.join(self.dic_path["PATH_TO_WORK_DIRECTORY"], "best_model.pkl")'''
+                print('==============  model pool evaluation =============')
+                
+                if self.dic_exp_conf["MODEL_POOL"] and cnt_round > 50:
+                    self.model_pool_wrapper(
+                        dic_path=self.dic_path,
+                        dic_exp_conf=self.dic_exp_conf,
+                        cnt_round=cnt_round
+                    )
+                
+                model_pool_dir = os.path.join(
+                    self.dic_path["PATH_TO_WORK_DIRECTORY"],
+                    "best_model.pkl"
+                )
+
                 if os.path.exists(model_pool_dir):
                     model_pool = pickle.load(open(model_pool_dir, "rb"))
                     ind = random.randint(0, len(model_pool) - 1)
