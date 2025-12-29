@@ -544,9 +544,9 @@ class Pipeline:
                                             dic_exp_conf=self.dic_exp_conf,
                                             cnt_round=cnt_round)
                 model_pool_dir = os.path.join(self.dic_path["PATH_TO_WORK_DIRECTORY"], "best_model.pkl")'''
-                print('==============  model pool evaluation =============')
+            print('==============  model pool evaluation =============')
                 
-                if self.dic_exp_conf["MODEL_POOL"] and cnt_round > 50:
+            if self.dic_exp_conf["MODEL_POOL"] and cnt_round > 50:
                     self.model_pool_wrapper(
                         dic_path=self.dic_path,
                         dic_exp_conf=self.dic_exp_conf,
