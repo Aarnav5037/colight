@@ -194,6 +194,9 @@ class Pipeline:
         return
 
     def updater_wrapper(self, cnt_round, dic_agent_conf, dic_exp_conf, dic_traffic_env_conf, dic_path, best_round=None, bar_round=None):
+        path="/kaggle/working/records/0515_afternoon_Colight_3_3_bi/anon_3_3_300_0.3_bi.json/train_round/round_0/generator_0/inter_0.pkl"
+        size_bytes = os.path.getsize(path)
+        print(f"File exists. Size: {size_bytes} bytes")
 
         updater = Updater(
             cnt_round=cnt_round,
