@@ -27,12 +27,17 @@ class Updater:
 
         #temporay path_to_log
         self.path_to_log=os.path.join(self.dic_path["PATH_TO_WORK_DIRECTORY"], "train_round", "round_0", "generator_0")
+        path="/kaggle/working/records/0515_afternoon_Colight_3_3_bi/anon_3_3_300_0.3_bi.json/train_round/round_0/generator_0/inter_0.pkl"
+        size_bytes = os.path.getsize(path)
+        print(f"File exists. Size: {size_bytes} bytes")
         env_tmp = DIC_ENVS[dic_traffic_env_conf["SIMULATOR_TYPE"]](
                               path_to_log = self.path_to_log,
                               path_to_work_directory = self.dic_path["PATH_TO_WORK_DIRECTORY"],
                               dic_traffic_env_conf = self.dic_traffic_env_conf)        
         #env_tmp.reset()
-
+        path="/kaggle/working/records/0515_afternoon_Colight_3_3_bi/anon_3_3_300_0.3_bi.json/train_round/round_0/generator_0/inter_0.pkl"
+        size_bytes = os.path.getsize(path)
+        print(f"File exists. Size: {size_bytes} bytes")
         for i in range(dic_traffic_env_conf['NUM_AGENTS']):
             agent_name = self.dic_exp_conf["MODEL_NAME"]
             if agent_name=='CoLight_Signal':
