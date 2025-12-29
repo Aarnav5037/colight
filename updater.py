@@ -26,7 +26,13 @@ class Updater:
 
 
         #temporay path_to_log
-        self.path_to_log=os.path.join(self.dic_path["PATH_TO_WORK_DIRECTORY"], "train_round", "round_0", "generator_0")
+        #self.path_to_log=os.path.join(self.dic_path["PATH_TO_WORK_DIRECTORY"], "train_round", "round_0", "generator_0")
+        self.path_to_log = os.path.join(
+            self.dic_path["PATH_TO_WORK_DIRECTORY"],"train_round"
+            "tmp_updater_env"
+        )
+        os.makedirs(self.path_to_log, exist_ok=True)
+
         path="/kaggle/working/records/0515_afternoon_Colight_3_3_bi/anon_3_3_300_0.3_bi.json/train_round/round_0/generator_0/inter_0.pkl"
         size_bytes = os.path.getsize(path)
         print(f"File exists. Size: {size_bytes} bytes")
