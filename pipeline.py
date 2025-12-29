@@ -436,6 +436,10 @@ class Pipeline:
             update_network_start_time = time.time()
             if self.dic_exp_conf["MODEL_NAME"] in self.dic_exp_conf["LIST_MODEL_NEED_TO_UPDATE"]:
                 if multi_process:
+                    path="/kaggle/working/records/0515_afternoon_Colight_3_3_bi/anon_3_3_300_0.3_bi.json/train_round/round_0/generator_0/inter_0.pkl"
+                    size_bytes = os.path.getsize(path)
+                    print(f"File exists. Size: {size_bytes} bytes")
+                    
                     print("update start (single process)")
                 
                     self.updater_wrapper(
@@ -449,6 +453,9 @@ class Pipeline:
                     )
                 
                     print("update finish (single process)")
+                    path="/kaggle/working/records/0515_afternoon_Colight_3_3_bi/anon_3_3_300_0.3_bi.json/train_round/round_0/generator_0/inter_0.pkl"
+                    size_bytes = os.path.getsize(path)
+                    print(f"File exists. Size: {size_bytes} bytes")
                 else:
                     self.updater_wrapper(cnt_round=cnt_round,
                                          dic_agent_conf=self.dic_agent_conf,
@@ -463,7 +470,7 @@ class Pipeline:
                     path_to_log = os.path.join(self.dic_path["PATH_TO_WORK_DIRECTORY"], "train_round",
                                                "round_" + str(cnt_round), "generator_" + str(cnt_gen))
                     try:
-                        print(path_to_log)
+                        #print(path_to_log)
                         self.downsample_for_system(path_to_log,self.dic_traffic_env_conf)
                     except Exception as e:
                         print("----------------------------")
