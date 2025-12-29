@@ -204,9 +204,17 @@ class Pipeline:
             best_round=best_round,
             bar_round=bar_round
         ) 
-
+        path="/kaggle/working/records/0515_afternoon_Colight_3_3_bi/anon_3_3_300_0.3_bi.json/train_round/round_0/generator_0/inter_0.pkl"
+        size_bytes = os.path.getsize(path)
+        print(f"File exists. Size: {size_bytes} bytes")
         updater.load_sample_for_agents()
+        path="/kaggle/working/records/0515_afternoon_Colight_3_3_bi/anon_3_3_300_0.3_bi.json/train_round/round_0/generator_0/inter_0.pkl"
+        size_bytes = os.path.getsize(path)
+        print(f"File exists. Size: {size_bytes} bytes")
         updater.update_network_for_agents()
+        path="/kaggle/working/records/0515_afternoon_Colight_3_3_bi/anon_3_3_300_0.3_bi.json/train_round/round_0/generator_0/inter_0.pkl"
+        size_bytes = os.path.getsize(path)
+        print(f"File exists. Size: {size_bytes} bytes")
         print("updater_wrapper end")
         return
 
@@ -436,10 +444,7 @@ class Pipeline:
             update_network_start_time = time.time()
             if self.dic_exp_conf["MODEL_NAME"] in self.dic_exp_conf["LIST_MODEL_NEED_TO_UPDATE"]:
                 if multi_process:
-                    path="/kaggle/working/records/0515_afternoon_Colight_3_3_bi/anon_3_3_300_0.3_bi.json/train_round/round_0/generator_0/inter_0.pkl"
-                    size_bytes = os.path.getsize(path)
-                    print(f"File exists. Size: {size_bytes} bytes")
-                    
+                 
                     print("update start (single process)")
                 
                     self.updater_wrapper(
