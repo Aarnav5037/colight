@@ -31,7 +31,7 @@ class Updater:
                               path_to_log = self.path_to_log,
                               path_to_work_directory = self.dic_path["PATH_TO_WORK_DIRECTORY"],
                               dic_traffic_env_conf = self.dic_traffic_env_conf)        
-        env_tmp.reset()
+        #env_tmp.reset()
 
         for i in range(dic_traffic_env_conf['NUM_AGENTS']):
             agent_name = self.dic_exp_conf["MODEL_NAME"]
